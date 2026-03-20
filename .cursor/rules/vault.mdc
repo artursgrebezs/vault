@@ -1,0 +1,18 @@
+---
+description: Laravel + Livewire conventions for the vault app
+globs: "**/*.{php,blade.php,js,css}"
+alwaysApply: false
+---
+
+# vault (Laravel + Livewire)
+
+- **Docs:** Canonical agent docs live under **`grb-setup/docs/vault/`** when the `grb/` workspace is open. Read `grb-setup/docs/WORKSPACE-REGISTRY.md` and `vault/AGENTS.md` first.
+- **Stack:** Laravel **13** + **Livewire 4** (SFC under `resources/views/components/`). Prefer Livewire over ad-hoc Alpine in Blade for interactive UI.
+- **Admin:** Root **`/`** is the Flux sidebar dashboard (auth + Spatie role **`super-admin`**); **`/login`** is the Livewire login page. New sections go in `layouts/admin.blade.php` sidebar + Livewire pages under `resources/views/components/admin/` (or sibling namespaces).
+- **Structure:** Routes in `routes/web.php` / `routes/api.php`; Livewire **4** SFCs in `resources/views/components/`; layouts in `resources/views/layouts/`; models in `app/Models/`.
+- **Testing:** For new routes, Livewire pages, or domain behavior, add/update **Feature** and **Livewire** tests and run **`./vendor/bin/sail artisan test`** until green. Use **`php-test`** / **`code-verify`** skills (`grb-setup/agent-skills/php-test/SKILL.md`, `code-verify/SKILL.md`). Use Livewire’s testing utilities for components. Add Dusk only when true browser E2E is required.
+- **HTTP / CSRF:** For mutating requests in scripts or tests, send CSRF token and cookies per Laravel docs.
+- **Assets:** Follow the project’s chosen frontend stack once `package.json` exists (Vite is default for new Laravel; document in `grb-setup/docs/vault/stack.md` if different).
+- **Frontend build:** After JS/CSS/Vite, Blade layouts, or `vite.config.*` changes, run `./vendor/bin/sail npm run build` (or `dev` while iterating). Playbook: **`grb-setup/agent-skills/frontend-build/SKILL.md`** when that repo is available; with workspace root **`grb/`**, the **frontend-build** Cursor skill under `grb/.cursor/skills/` applies too (see `grb/.cursor/rules/grb-workspace.mdc`).
+- **After meaningful changes:** Update agent docs per `grb-setup/agent-skills/doc-maintainer/SKILL.md` or invoke the **doc-maintainer** skill.
+- **Infra:** Shared proxy/scripts are in `grb-setup/`; do not duplicate `agent-instructions.md` — link to it for grb-vault-era automation patterns when relevant.
